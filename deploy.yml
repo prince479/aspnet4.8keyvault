@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-aspnet4.8-webapp
+  namespace: dev-aspnet-app
+  labels:
+    app: dev-aspnet4.8-webapp
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: dev-aspnet4.8-webapp
+      labels:
+        app: dev-aspnet4.8-webapp
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": windows
+      containers:
+        - name: dev-aspnet4.8-webapp
+          image: acrmediawestus3.azurecr.io/dev-aspnet4.8-repo:($tag)
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
+              protocol: TCP
+#           volumeMounts:
+#             - name: azurefileshare
+#               #mountPath: /var/www/html/wp-content/uploads
+#               mountPath: "c:/inetpub/wwwroot/img"
+#       volumes:
+#         - name: azurefileshare
+#           persistentVolumeClaim:
+#             claimName: azurefileaspnet4.8
+  selector:
+    matchLabels:
+      app: dev-aspnet4.8-webapp

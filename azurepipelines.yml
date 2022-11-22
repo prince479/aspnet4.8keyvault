@@ -40,27 +40,26 @@ stages:
         containerRegistry: 'acrmedianonprod-connection'
         tags: |
           $(tag)
-# - stage: Deploy
-#   displayName: Deploy stage
-#   dependsOn: Build
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
 
-#   jobs:
-#   - deployment: Deploy
-#     displayName: Deploy
-#     pool: aks-windows-pool
-#     environment: 'Private-Aks-dev'
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool: aks-windows-pool
+    environment: 'Private-Aks-dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
         
-#           - task: KubernetesManifest@0
-#             inputs:
-#              action: 'deploy'
-#              namespace: 'dev-astrology-app'
-#              kubernetesServiceConnection: 'aks-media-nonprod-conn'
-#              manifests: |
-#                 **/manifests/dev-astrology-deployment.yml
-#                 **/manifests/dev-astrology-services.yml
-#              containers: |
-#                 $(containerRegistry)/$(imageRepository):$(tag)
+          - task: KubernetesManifest@0
+            inputs:
+             action: 'deploy'
+             namespace: 'dev-aspnet-app'
+             kubernetesServiceConnection: 'aks-media-nonprod-conn'
+             manifests: |
+                **/deploy.yml
+             containers: |
+                $(containerRegistry)/$(imageRepository):$(tag)
