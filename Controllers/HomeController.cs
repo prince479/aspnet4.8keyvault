@@ -2,20 +2,53 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.Configuration.ConfigurationBuilders;
 
 namespace EnvVariablesV4._8.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public async Task<string> GetKeyVault()
         {
-            var appsettings = ConfigurationManager.AppSettings;
-            ViewBag.SMTP_URL = appsettings["SMTP_URL"];
-            ViewBag.SMTP_EMAIL = appsettings["SMTP_EMAIL"];
-            ViewBag.URI = appsettings["uri"];
-            ViewBag.Secret = appsettings["ACOM--DSN--AstrologyDotCom"];
+            var output = string.Empty;
+            try
+            {
+    
+                //AzureKeyVaultConfigBuilder test = new AzureKeyVaultConfigBuilder("https://kvmedianonprodwestus3.vault.azure.net/",new DefaultAzureCredential());
+                string userAssignedClientId = "d6fae821-12af-4373-bfa4-88df3333a345";
+                
+                var client = new SecretClient(new Uri("https://kvmedianonprodwestus3.vault.azure.net/"), new DefaultAzureCredential(new DefaultAzureCredentialOptions { ManagedIdentityClientId = userAssignedClientId }));
+                
+                KeyVaultSecret secret = await client.GetSecretAsync("ACOM--DSN--AstrologyDotCom");
+                output = secret.Value;
+            }
+            catch (AuthenticationFailedException e)
+            {
+                output = e.Message;
+            }
+            return output;
+        }
+        public async Task<ActionResult> Index()
+        {
+            // Create a secret client using the DefaultAzureCredential
+           
+            
+                var appsettings = ConfigurationManager.AppSettings;
+                ViewBag.SMTP_URL = appsettings["SMTP_URL"];
+                ViewBag.SMTP_EMAIL = appsettings["SMTP_EMAIL"];
+                ViewBag.URI = appsettings["uri"];
+                
+                
+               ViewBag.Secret= await GetKeyVault();
+            
+            
+            
+           // ViewBag.Secret = appsettings["ACOM--DSN--AstrologyDotCom"];
             return View();
         }
 
