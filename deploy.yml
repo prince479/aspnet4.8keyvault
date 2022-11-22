@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dev-aspnet4.8-webapp
+  name: dev-aspnet-webapp
   namespace: dev-aspnet-app
   labels:
-    app: dev-aspnet4.8-webapp
+    app: dev-aspnet-webapp
 spec:
   replicas: 1
   template:
     metadata:
-      name: dev-aspnet4.8-webapp
+      name: dev-aspnet-webapp
       labels:
-        app: dev-aspnet4.8-webapp
+        app: dev-aspnet-webapp
     spec:
       nodeSelector:
         "kubernetes.io/os": windows
       containers:
-        - name: dev-aspnet4.8-webapp
-          image: acrmediawestus3.azurecr.io/dev-aspnet4.8-repo:($tag)
+        - name: dev-aspnet-webapp
+          image: acrmediawestus3.azurecr.io/dev-aspnet-repo:($tag)
           imagePullPolicy: Always
           ports:
             - name: http
@@ -33,7 +33,7 @@ spec:
 #       volumes:
 #         - name: azurefileshare
 #           persistentVolumeClaim:
-#             claimName: azurefileaspnet4.8
+#             claimName: azurefileaspnet
   selector:
     matchLabels:
-      app: dev-aspnet4.8-webapp
+      app: dev-aspnet-webapp
