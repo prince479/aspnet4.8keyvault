@@ -18,13 +18,14 @@ namespace EnvVariablesV4._8.Controllers
             var output = string.Empty;
             try
             {
-    
+                var appsettings = ConfigurationManager.AppSettings;
                 //AzureKeyVaultConfigBuilder test = new AzureKeyVaultConfigBuilder("https://kvmedianonprodwestus3.vault.azure.net/",new DefaultAzureCredential());
-                string userAssignedClientId = "6eba1142-4b68-48a6-88cf-dc8d12a83fdf";
+ //string userAssignedClientId = "6eba1142-4b68-48a6-88cf-dc8d12a83fdf";
+                string userAssignedClientId = appsettings["UserAssignedClientId"];
+              
+                var client = new SecretClient(new Uri(appsettings["KeyVault_URI"]), new DefaultAzureCredential(new DefaultAzureCredentialOptions { ManagedIdentityClientId = userAssignedClientId }));
                 
-                var client = new SecretClient(new Uri("https://kvmedianonprodwestus3.vault.azure.net/"), new DefaultAzureCredential(new DefaultAzureCredentialOptions { ManagedIdentityClientId = userAssignedClientId }));
-                
-                KeyVaultSecret secret = await client.GetSecretAsync("ACOM--DSN--AstrologyDotCom");
+                KeyVaultSecret secret = await client.GetSecretAsync(appsettings["SecretName"]);
                 output = secret.Value;
             }
             catch (AuthenticationFailedException e)

@@ -63,3 +63,12 @@ stages:
                 **/deploy.yml
              containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
+          - task: KubernetesManifest@0
+            displayName: patching env variables
+            inputs:
+             action: 'patch'
+             kind: 'deployment'
+             name: dev-aspnet-webapp
+             namespace: 'dev-aspnet-app'
+             kubernetesServiceConnection: 'aks-media-nonprod-conn'
+             patch: '{"spec":{"template":{"spec":{"containers":[{"name":"dev-apsnet-app","image":"acrmediawestus3.azurecr.io/dev-aspnet4.8-repo:$(Build.BuildId)","env":[{"name":"KeyVault_URI","value":"$(KeyVault_URI)"},{"name":"SecretName","value":"$(SecretName)"},{"name":"UserAssignedClientId","value":"$(UserAssignedClientId)"}]}]}}}}'
