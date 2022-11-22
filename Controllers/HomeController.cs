@@ -20,7 +20,7 @@ namespace EnvVariablesV4._8.Controllers
             {
     
                 //AzureKeyVaultConfigBuilder test = new AzureKeyVaultConfigBuilder("https://kvmedianonprodwestus3.vault.azure.net/",new DefaultAzureCredential());
-                string userAssignedClientId = "d6fae821-12af-4373-bfa4-88df3333a345";
+                string userAssignedClientId = "6eba1142-4b68-48a6-88cf-dc8d12a83fdf";
                 
                 var client = new SecretClient(new Uri("https://kvmedianonprodwestus3.vault.azure.net/"), new DefaultAzureCredential(new DefaultAzureCredentialOptions { ManagedIdentityClientId = userAssignedClientId }));
                 
