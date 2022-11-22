@@ -17,7 +17,7 @@ spec:
         "kubernetes.io/os": windows
       containers:
         - name: dev-aspnet-webapp
-          image: acrmediawestus3.azurecr.io/dev-aspnet-repo:($tag)
+          image: acrmediawestus3.azurecr.io/dev-aspnet4.8-repo:($tag)
           imagePullPolicy: Always
           ports:
             - name: http
