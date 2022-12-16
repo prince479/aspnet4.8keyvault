@@ -16,8 +16,8 @@ namespace EnvVariablesV4._8.Controllers
         public async Task<string> GetKeyVault()
         {
             var output = string.Empty;
-            try
-            {
+//             try
+//             {
                 var appsettings = ConfigurationManager.AppSettings;
                 //AzureKeyVaultConfigBuilder test = new AzureKeyVaultConfigBuilder("https://kvmedianonprodwestus3.vault.azure.net/",new DefaultAzureCredential());
  //string userAssignedClientId = "6eba1142-4b68-48a6-88cf-dc8d12a83fdf";
@@ -27,11 +27,11 @@ namespace EnvVariablesV4._8.Controllers
               
                 KeyVaultSecret secret = await client.GetSecretAsync(appsettings["SecretName"]);
                 output = secret.Value;
-            }
-            catch (AuthenticationFailedException e)
-            {
-                output = e.Message;
-            }
+//             }
+//             catch (AuthenticationFailedException e)
+//             {
+//                 output = e.Message;
+//             }
             return output;
         }
         public async Task<ActionResult> Index()
