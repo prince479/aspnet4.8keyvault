@@ -24,7 +24,7 @@ namespace EnvVariablesV4._8.Controllers
                 string userAssignedClientId = appsettings["UserAssignedClientId"];
               
                 var client = new SecretClient(new Uri(appsettings["KeyVault_URI"]), new DefaultAzureCredential(new DefaultAzureCredentialOptions { ManagedIdentityClientId = userAssignedClientId }));
-                
+              
                 KeyVaultSecret secret = await client.GetSecretAsync(appsettings["SecretName"]);
                 output = secret.Value;
             }
